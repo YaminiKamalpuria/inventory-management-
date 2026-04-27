@@ -15,7 +15,8 @@ const app = express();
 app.use(cors({
   origin: [
     'http://localhost:3000',
-    'https://inventory-management-nhyt.onrender.com'
+    'https://inventory-management-nhyt.onrender.com',
+    'https://inventory-management-dun-nu.vercel.app'
   ],
   credentials: true
 }));app.use(express.json());
