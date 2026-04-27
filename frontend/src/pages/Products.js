@@ -112,7 +112,7 @@ function AddProductModal({ onClose, onSuccess }) {
 function CSVUploadModal({ onClose, onSuccess }) {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState(1); // 1=upload, 2=preview
+  const [step, setStep] = useState(1);
   const [preview, setPreview] = useState([]);
   const fileRef = useRef();
 
@@ -253,10 +253,11 @@ export default function Products() {
   const [showCSV, setShowCSV] = useState(false);
   const [buyProduct, setBuyProduct] = useState(null);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchProducts();
   }, [page, search]);
-  
+
   const fetchProducts = async () => {
     setLoading(true);
     try {

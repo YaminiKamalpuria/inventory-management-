@@ -1,23 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
-import { productAPI, invoiceAPI, statisticsAPI } from '../utils/api';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { statisticsAPI } from '../utils/api';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import toast from 'react-hot-toast';
-
-const OV_ICONS = {
-  sales: { bg: '#dbeafe', icon: '🛒' },
-  revenue: { bg: '#dcfce7', icon: '💰' },
-  profit: { bg: '#fce7f3', icon: '📈' },
-  cost: { bg: '#fef3c7', icon: '🏠' },
-  purchase: { bg: '#ede9fe', icon: '📦' },
-  cancel: { bg: '#fee2e2', icon: '❌' },
-  return: { bg: '#ffedd5', icon: '🔄' },
-  inStock: { bg: '#d1fae5', icon: '📋' },
-  toReceive: { bg: '#e0f2fe', icon: '👁' },
-  suppliers: { bg: '#f3e8ff', icon: '📊' },
-  categories: { bg: '#fef9c3', icon: '📁' },
-};
-
+ 
 function OverviewCard({ title, items }) {
   return (
     <div className="overview-section">
@@ -36,21 +22,23 @@ function OverviewCard({ title, items }) {
     </div>
   );
 }
-
+ 
 export default function Home() {
   const [overview, setOverview] = useState(null);
   const [graphData, setGraphData] = useState([]);
   const [period, setPeriod] = useState('monthly');
   const [loading, setLoading] = useState(true);
-
+ 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchData();
   }, []);
-
+ 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchGraph();
   }, [period]);
-
+ 
   const fetchData = async () => {
     try {
       const { data } = await statisticsAPI.getOverview();
@@ -61,7 +49,7 @@ export default function Home() {
       setLoading(false);
     }
   };
-
+ 
   const fetchGraph = async () => {
     try {
       const { data } = await statisticsAPI.getGraph(period);
@@ -73,9 +61,9 @@ export default function Home() {
       setGraphData(formatted);
     } catch {}
   };
-
+ 
   const fmt = (n) => n >= 1000 ? `₹${(n / 1000).toFixed(1)}k` : `₹${n || 0}`;
-
+ 
   if (loading) return (
     <div className="app-layout">
       <Sidebar />
@@ -86,9 +74,9 @@ export default function Home() {
       </main>
     </div>
   );
-
+ 
   const ov = overview || {};
-
+ 
   return (
     <div className="app-layout">
       <Sidebar />
@@ -97,7 +85,7 @@ export default function Home() {
           <span className="page-header-title">Home</span>
           <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#22c55e' }} />
         </div>
-
+ 
         <div className="page-body">
           <div className="home-grid">
             <div className="home-left">
@@ -107,14 +95,14 @@ export default function Home() {
                 { bg: '#fce7f3', icon: '📈', value: fmt(ov.profit), label: 'Profit' },
                 { bg: '#fef3c7', icon: '🏠', value: fmt(ov.cost), label: 'Cost' },
               ]} />
-
+ 
               <OverviewCard title="Purchase Overview" items={[
                 { bg: '#ede9fe', icon: '📦', value: ov.purchases?.count || 0, label: 'Purchase' },
                 { bg: '#fef3c7', icon: '🏠', value: fmt(ov.purchases?.total), label: 'Cost' },
                 { bg: '#fee2e2', icon: '❌', value: 0, label: 'Cancel' },
                 { bg: '#ffedd5', icon: '🔄', value: 0, label: 'Return' },
               ]} />
-
+ 
               {/* Sales & Purchase Chart */}
               <div className="chart-section">
                 <div className="chart-header">
@@ -142,7 +130,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-
+ 
             <div className="home-right">
               {/* Inventory Summary */}
               <div className="card">
@@ -160,7 +148,7 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-
+ 
               {/* Product Summary */}
               <div className="card">
                 <div style={{ fontWeight: 700, fontSize: '0.9rem', marginBottom: 14 }}>Product Summary</div>
@@ -177,7 +165,7 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-
+ 
               {/* Top Products */}
               <div className="card" style={{ flex: 1 }}>
                 <div style={{ fontWeight: 700, fontSize: '0.9rem', marginBottom: 14 }}>Top Products</div>

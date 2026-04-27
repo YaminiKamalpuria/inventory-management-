@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Sidebar from '../components/Sidebar';
 import { invoiceAPI } from '../utils/api';
 import toast from 'react-hot-toast';
-
+ 
 function InvoiceViewModal({ invoice, onClose }) {
   const handlePrint = () => window.print();
   return (
@@ -15,7 +15,7 @@ function InvoiceViewModal({ invoice, onClose }) {
             <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem' }}>✕</button>
           </div>
         </div>
-
+ 
         <div className="invoice-preview">
           <div className="invoice-preview-header">
             <div>
@@ -45,7 +45,7 @@ function InvoiceViewModal({ invoice, onClose }) {
               </div>
             </div>
           </div>
-
+ 
           <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 20 }}>
             <thead>
               <tr>
@@ -64,7 +64,7 @@ function InvoiceViewModal({ invoice, onClose }) {
               ))}
             </tbody>
           </table>
-
+ 
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <div style={{ width: 220 }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', fontSize: '0.82rem' }}>
@@ -81,11 +81,11 @@ function InvoiceViewModal({ invoice, onClose }) {
               </div>
             </div>
           </div>
-
+ 
           <div style={{ marginTop: 20, padding: '12px 16px', background: '#f9fafb', borderRadius: 8, fontSize: '0.78rem', color: '#6b7280', display: 'flex', alignItems: 'center', gap: 8 }}>
             ℹ Please pay within 7 days of receiving this invoice.
           </div>
-
+ 
           <div style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid #e5e7eb', display: 'flex', justifyContent: 'space-between', fontSize: '0.78rem', color: '#6b7280' }}>
             <span>www.receiheal.inc</span>
             <span>+91 00000 00000</span>
@@ -96,17 +96,17 @@ function InvoiceViewModal({ invoice, onClose }) {
     </div>
   );
 }
-
+ 
 function ThreeDotMenu({ invoice, onStatusChange, onDelete, onView }) {
   const [open, setOpen] = useState(false);
   const ref = useRef();
-
+ 
   useEffect(() => {
     const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, []);
-
+ 
   return (
     <div className="dropdown" ref={ref}>
       <button className="three-dot-btn" onClick={(e) => { e.stopPropagation(); setOpen(!open); }}>⋮</button>
@@ -128,7 +128,7 @@ function ThreeDotMenu({ invoice, onStatusChange, onDelete, onView }) {
     </div>
   );
 }
-
+ 
 export default function Invoices() {
   const [invoices, setInvoices] = useState([]);
   const [summary, setSummary] = useState(null);
@@ -138,11 +138,12 @@ export default function Invoices() {
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState('');
   const [viewInvoice, setViewInvoice] = useState(null);
-
+ 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchInvoices();
   }, [page, search]);
-
+ 
   const fetchInvoices = async () => {
     setLoading(true);
     try {
@@ -153,14 +154,14 @@ export default function Invoices() {
     } catch { toast.error('Failed to load invoices'); }
     finally { setLoading(false); }
   };
-
+ 
   const fetchSummary = async () => {
     try {
       const { data } = await invoiceAPI.getSummary();
       setSummary(data.summary);
     } catch {}
   };
-
+ 
   const handleStatusChange = async (id, status) => {
     try {
       await invoiceAPI.updateStatus(id, status);
@@ -168,7 +169,7 @@ export default function Invoices() {
       fetchInvoices(); fetchSummary();
     } catch { toast.error('Failed to update'); }
   };
-
+ 
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this invoice?')) return;
     try {
@@ -177,17 +178,17 @@ export default function Invoices() {
       fetchInvoices(); fetchSummary();
     } catch { toast.error('Failed to delete'); }
   };
-
+ 
   const handleViewInvoice = async (id) => {
     try {
       const { data } = await invoiceAPI.getById(id);
       setViewInvoice(data.invoice);
     } catch { toast.error('Failed to load invoice'); }
   };
-
+ 
   const s = summary || {};
   const fmt = (n) => n >= 1000 ? `₹${(n / 1000).toFixed(1)}k` : `₹${n || 0}`;
-
+ 
   return (
     <div className="app-layout">
       <Sidebar />
@@ -199,7 +200,7 @@ export default function Invoices() {
             <input placeholder="Search here..." value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} />
           </div>
         </div>
-
+ 
         <div className="page-body">
           {/* Summary Cards */}
           <div className="card mb-4" style={{ marginBottom: 20 }}>
@@ -222,13 +223,13 @@ export default function Invoices() {
               ))}
             </div>
           </div>
-
+ 
           {/* Invoices Table */}
           <div className="table-container">
             <div className="table-header">
               <span className="table-title">Invoices List</span>
             </div>
-
+ 
             {loading ? (
               <div style={{ padding: 40, textAlign: 'center' }}><span className="spinner spinner-dark" /></div>
             ) : (
@@ -270,7 +271,7 @@ export default function Invoices() {
                 </tbody>
               </table>
             )}
-
+ 
             <div className="pagination">
               <span className="pagination-info">Page {page} of {totalPages} — {total} total</span>
               <div className="pagination-btns">
@@ -281,7 +282,7 @@ export default function Invoices() {
           </div>
         </div>
       </main>
-
+ 
       {viewInvoice && <InvoiceViewModal invoice={viewInvoice} onClose={() => setViewInvoice(null)} />}
     </div>
   );
