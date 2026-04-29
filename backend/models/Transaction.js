@@ -12,11 +12,10 @@ const transactionSchema = new mongoose.Schema({
   year: { type: Number },
 }, { timestamps: true });
 
-transactionSchema.pre('save', function(next) {
+transactionSchema.pre('save', async function() {
   const now = new Date();
   this.month = now.getMonth() + 1;
   this.year = now.getFullYear();
-  next();
 });
 
 module.exports = mongoose.model('Transaction', transactionSchema);
