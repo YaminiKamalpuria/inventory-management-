@@ -225,6 +225,7 @@ router.post('/:id/buy', protect, async (req, res) => {
 
     res.json({ success: true, message: 'Purchase successful', product });
   } catch (error) {
+    console.error('BUY ERROR:', error);
     res.status(500).json({ success: false, message: error.message });
   }
 });
