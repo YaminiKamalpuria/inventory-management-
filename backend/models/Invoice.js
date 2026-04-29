@@ -9,7 +9,7 @@ const invoiceItemSchema = new mongoose.Schema({
 const invoiceSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   invoiceId: { type: String, required: true, unique: true },
-  referenceNumber: { type: mongoose.Schema.Types.ObjectId, auto: true },
+
   items: [invoiceItemSchema],
   subtotal: { type: Number, required: true },
   tax: { type: Number, default: 0 },
