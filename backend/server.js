@@ -13,11 +13,17 @@ const { startCronJobs } = require('./utils/cron');
 const app = express();
 
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'https://inventory-management-nhyt.onrender.com',
-    'https://inventory-management-dun-nu.vercel.app'
-  ],
+  origin: function (origin, callback) {
+    const allowed = [
+      'http://localhost:3000',
+      /\.vercel\.app$/,
+    ];
+    if (!origin || allowed.some(o => typeof o === 'string' ? o === origin : o.test(origin))) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
