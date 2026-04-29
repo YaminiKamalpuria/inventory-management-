@@ -350,7 +350,7 @@ export default function Products() {
                       <td>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                           {p.image ? (
-                            <img src={`http://localhost:5000${p.image}`} alt={p.productName} className="product-img" />
+                            <img src={`https://inventory-management-nhyt.onrender.com${p.image}`} alt={p.productName} className="product-img" />
                           ) : (
                             <div className="product-img-placeholder">📦</div>
                           )}
